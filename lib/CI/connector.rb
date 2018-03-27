@@ -50,7 +50,7 @@ module CI
         data = JSON.parse message.value
 
         @logger.debug data
-        if data.has_key? 'type'
+        if @subscribers[data['type']].respond_to?('each')
           @subscribers[data['type']].each do |subscriber|
             subscriber.call data
           end
