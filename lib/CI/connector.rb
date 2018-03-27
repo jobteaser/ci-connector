@@ -11,7 +11,7 @@ module CI
       @group_id = group_id
       @topic = topic
       @bootstrap_servers = bootstrap_servers
-      @subscribers = {}
+      @subscribers = Hash.new([])
 
       @logger = defaultLogger
     end
@@ -22,11 +22,11 @@ module CI
       logger
     end
 
-    def on(event, proc)
-      (@subscribers[event] ||= []) << proc
+    def on(event, &proc)
+      @subscribers[event] << proc
     end
 
-    def self.fromEnv
+    def self.from_env
       new(ENV.fetch('KAFKA_CLIENT_ID', Socket.gethostname),
           # By default, use the hostname as consumer group
           ENV.fetch('KAFKA_CONSUMER_GROUP', Socket.gethostname),
@@ -61,14 +61,6 @@ module CI
     def stop
       @consumer.stop
     end
-    # Events
 
-    def onPullRequestOpened(&block)
-      on('pull_request.opened', block)
-    end
-
-    def onPullRequestClosed(&block)
-      on('pull_request.closed', block)
-    end
   end
 end

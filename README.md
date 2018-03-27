@@ -1,25 +1,5 @@
 # Ci::Connector
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ci/connector`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'ci-connector'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install ci-connector
-
 ## Usage
 
 ### Using the docker image
@@ -34,7 +14,7 @@ Sample script
 require  "CI/connector"
 
 conn = CI::Connector.fromEnv()
-conn.onPullRequestClosed do |event|
+conn.on('pull_request.closed' do |event|
    conn.logger.info "Close PR #{event['number']}"
 end
 
