@@ -83,14 +83,13 @@ spec:
         release: ci-connector-abcd
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: ci-connector
         release: ci-connector-abcd
     spec:
       containers:
       - name: connector
-        image: docker.k8s.jobteaser.net/jobteaser/ci-connector:latest
+        image: docker.k8s.jobteaser.net/coretech/ci-connector:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -109,10 +108,15 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /usr/src/app
-    volumes:
-    - name: config
-      configMap:
-        name: ci-connector-abcd
+      volumes:
+      - name: config
+        configMap:
+          name: ci-connector-abcd
+          items:
+          - key: main.rb
+            path: main.rb
+            mode: 511
+
 ---
 kind: ConfigMap
 apiVersion: v1
