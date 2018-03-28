@@ -6,7 +6,7 @@ module CI
 
     attr_accessor :logger
 
-    def initialize(client_id, group_id, bootstrap_servers = 'localhost:9092', topic = 'github')
+    def initialize(client_id, group_id, bootstrap_servers = 'localhost:9092', topic = 'github.*')
       @client_id = client_id
       @group_id = group_id
       @topic = topic
@@ -31,7 +31,7 @@ module CI
           # By default, use the hostname as consumer group
           ENV.fetch('KAFKA_CONSUMER_GROUP', Socket.gethostname),
           ENV.fetch('KAFKA_BROKERS', 'localhost:9092').split(','),
-          ENV.fetch('KAFKA_TOPIC', 'github'))
+          ENV.fetch('KAFKA_TOPIC', 'github.*'))
     end
 
     # Start listening for events
@@ -50,10 +50,9 @@ module CI
         data = JSON.parse message.value
 
         @logger.debug data
-        if @subscribers[data['type']].respond_to?('each')
-          @subscribers[data['type']].each do |subscriber|
-            subscriber.call data
-          end
+        key = message.topic + "." + data['type']
+        @subscribers[key].each do |subscriber|
+          subscriber.call data
         end
       end
     end

@@ -109,7 +109,7 @@ data:
     require  "CI/connector"
 
     conn = CI::Connector.fromEnv()
-    conn.onPullRequestClosed do |event|
+    conn.on('github.pull_request.closed') do |event|
     conn.logger.info "Close PR #{event['number']}"
     end
 
