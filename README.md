@@ -11,17 +11,18 @@ Sample script
 ```ruby
 #!/usr/bin/env ruby
 
-require  "CI/connector"
+require "CI/connector"
 
-conn = CI::Connector.fromEnv()
-conn.on('pull_request.closed' do |event|
-   conn.logger.info "Close PR #{event['number']}"
+conn = CI::Connector.from_env()
+conn.on('github.pull_request') do |event|
+  if event['action'] == 'closed'
+    conn.logger.info "Close PR #{event['number']}"
+  end
 end
 
 trap("TERM") { conn.stop }
 trap("INT") { conn.stop }
 
-conn.start
 ```
 
 ### Docker deployment
@@ -106,16 +107,16 @@ data:
   main.rb: |
     #!/usr/bin/env ruby
 
-    require  "CI/connector"
+    require "CI/connector"
 
-    conn = CI::Connector.fromEnv()
-    conn.on('github.pull_request.closed') do |event|
-    conn.logger.info "Close PR #{event['number']}"
+    conn = CI::Connector.from_env()
+    conn.on('github.pull_request') do |event|
+      if event['action'] == 'closed'
+        conn.logger.info "Close PR #{event['number']}"
+      end
     end
 
     trap("TERM") { conn.stop }
     trap("INT") { conn.stop }
-
-    conn.start
 
 ```

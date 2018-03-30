@@ -6,7 +6,7 @@ module CI
 
     attr_accessor :logger
 
-    def initialize(client_id, group_id, bootstrap_servers = 'localhost:9092', topic = 'github.*')
+    def initialize(client_id, group_id, bootstrap_servers = 'localhost:9092')
       @client_id = client_id
       @group_id = group_id
       @bootstrap_servers = bootstrap_servers
