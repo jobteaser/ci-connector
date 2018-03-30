@@ -41,8 +41,6 @@ module CI
         logger: @logger
       )
 
-      puts @subscribers.to_json
-
       @consumer = kafka.consumer(group_id: @group_id)
 
       @subscribers.each do |key, value|
