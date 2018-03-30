@@ -1,0 +1,68 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ci-connector-abcd
+  annotations:
+  labels:
+    app: ci-connector
+    release: ci-connector-abcd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: ci-connector
+        release: ci-connector-abcd
+  template:
+    metadata:
+      labels:
+        app: ci-connector
+        release: ci-connector-abcd
+    spec:
+      containers:
+      - name: connector
+        image: docker.k8s.jobteaser.net/coretech/ci-connector:latest
+        tty: true
+        command:
+        - '/usr/local/bin/ruby'
+        args:
+        - "/app/main.rb"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          value: "kafka-kafka:9092"
+        - name: KAFKA_CONSUMER_GROUP
+          value: ci-connector-abcd-2
+        resources:
+          limits:
+            cpu: "1"
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: config
+          mountPath: /app
+      volumes:
+      - name: config
+        configMap:
+          name: ci-connector-abcd
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ci-connector-abcd
+data:
+  main.rb: |
+    require "CI/connector"
+
+    conn = CI::Connector.from_env()
+    conn.on('github.pull_request') do |event|
+      if event['action'] == 'closed'
+        conn.logger.info "Close #{event['repository']['full_name']} PR #{event['number']}"
+      end
+    end
+    conn.start
+
+    trap("TERM") { conn.stop }
+    trap("INT") { conn.stop }
