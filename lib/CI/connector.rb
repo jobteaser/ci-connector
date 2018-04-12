@@ -49,12 +49,14 @@ module CI
       end
 
       @consumer.each_message do |message|
-        data = JSON.parse message.value
-
-        @logger.debug data
-
-        @subscribers[message.topic].each do |subscriber|
-          subscriber.call data
+        @logger.debug message
+        begin
+          data = JSON.parse message.value
+          @subscribers[message.topic].each do |subscriber|
+            subscriber.call data
+          end
+        rescue
+          @logger.warn "Invalid message #{message}"
         end
       end
     end
