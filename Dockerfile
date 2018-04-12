@@ -1,8 +1,6 @@
 FROM ruby:2.4-alpine
 
-RUN echo @edge http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-    echo http://dl-cdn.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
-    apk --no-cache add ca-certificates librdkafka@edge==0.11.3-r0
+RUN apk --no-cache add ca-certificates 
 
 COPY . /usr/src/connector
 RUN cd /usr/src/connector && \
@@ -12,5 +10,3 @@ RUN cd /usr/src/connector && \
 
 ENV BOOTSTRAP_SERVERS=localhost \
     TOPIC=github 
-
-ENTRYPOINT [ "/usr/src/app/main.rb" ]
