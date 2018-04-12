@@ -52,11 +52,13 @@ module CI
         @logger.debug message
         begin
           data = JSON.parse message.value
-          @subscribers[message.topic].each do |subscriber|
-            subscriber.call data
-          end
         rescue
-          @logger.warn "Invalid message #{message}"
+          @logger.error "Invalid message #{message.value}"
+          return
+        end
+
+        @subscribers[message.topic].each do |subscriber|
+          subscriber.call data
         end
       end
     end
