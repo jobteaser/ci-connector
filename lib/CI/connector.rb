@@ -53,12 +53,13 @@ module CI
         begin
           data = JSON.parse message.value
         rescue
+          data = :null
           @logger.error "Invalid message #{message.value}"
-          return
         end
-
-        @subscribers[message.topic].each do |subscriber|
-          subscriber.call data
+        if data != :null
+          @subscribers[message.topic].each do |subscriber|
+            subscriber.call data
+          end
         end
       end
     end
