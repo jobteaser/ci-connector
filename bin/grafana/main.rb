@@ -36,7 +36,6 @@ require 'date'
 #   "text":"Annotation Description"
 # }
 
-
 def iso_to_millis(date)
   (DateTime.iso8601(date).to_time.to_f * 1000).to_i
 end
