@@ -57,7 +57,7 @@ conn.on('environment.lifecycle') do |event|
       isRegion: true,
       tags: [ 
         "release", 
-        "app:#{event['data']['projet']['name']}"
+        "app:#{event['data']['project']['name']}"
       ],
       text: "Release #{event['data']['project']['name']} #{event['name']}"
     }
@@ -75,6 +75,3 @@ conn.on('environment.lifecycle') do |event|
 end
 
 conn.start
-
-trap("TERM") { conn.stop }
-trap("INT") { conn.stop }
