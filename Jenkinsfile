@@ -5,5 +5,6 @@ fullPipeline(
   'autoRelease': true,
   'deployFeature': false,
   'deployPreproduction': false,
-  'tagImageWithBranch': true
+  'tagImageWithBranch': true,
+  'release': {}
 )
