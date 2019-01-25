@@ -77,7 +77,7 @@ require 'date'
 
 conn = CI::Connector.from_env
 conn.on('environment.lifecycle') do |event|
-  continue unless event['event'] == 'release_started' || event['event'] == 'release_completed'
+  continue unless %w(release_started release_completed).include? event['event']
 
   uri = URI(ENV['SLACK_URL'])
 
