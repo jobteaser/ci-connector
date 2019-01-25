@@ -16,6 +16,11 @@ datadog:
 grafana:
 	$(MAKE) _deploy NAME=$@
 
+.PHONY:
+# Deploy slack connector
+slack:
+	$(MAKE) _deploy NAME=$@
+
 .PHONY: help
 .DEFAULT_GOAL:= help
 help:
