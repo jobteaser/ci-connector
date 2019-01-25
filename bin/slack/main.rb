@@ -77,7 +77,7 @@ require 'date'
 
 conn = CI::Connector.from_env
 conn.on('environment.lifecycle') do |event|
-  if event['event'] == 'release_completed'
+  if event['event'] == 'release_started' || event['event'] == 'release_completed'
 
     uri = URI(ENV['SLACK_URL'])
 
@@ -110,6 +110,12 @@ conn.on('environment.lifecycle') do |event|
         }
       ]
     }
+
+    if event['event'] == 'release_started'
+      payload['text'] = "Release started"
+    else
+      payload['text'] = "Release completed"
+    end
 
     # Create the HTTP objects
     http = Net::HTTP.new(uri.host, uri.port)
