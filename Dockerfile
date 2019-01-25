@@ -1,6 +1,6 @@
 FROM ruby:2.5-alpine
 
-RUN apk --no-cache add ca-certificates 
+RUN apk --no-cache add ca-certificates git
 
 COPY . /usr/src/connector
 RUN cd /usr/src/connector && \
