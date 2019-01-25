@@ -79,7 +79,7 @@ conn = CI::Connector.from_env
 conn.on('environment.lifecycle') do |event|
   if event['event'] == 'release_completed'
 
-    uri = URI("https://hooks.slack.com/services/T03AA3Y27/BFP2H3YV9/" + ENV['SLACK_TOKEN'])
+    uri = URI(ENV['SLACK_URL'])
 
     header = {
       'Content-Type': 'application/json',
