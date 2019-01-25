@@ -77,7 +77,7 @@ require 'date'
 
 conn = CI::Connector.from_env
 conn.on('environment.lifecycle') do |event|
-  continue unless %w(release_started release_completed).include? event['event']
+  return unless %w(release_started release_completed).include? event['event']
 
   uri = URI(ENV['SLACK_URL'])
 
@@ -89,21 +89,21 @@ conn.on('environment.lifecycle') do |event|
     "attachments": [
       {
         "color": "#36a64f",
-        "ts": DateTime.iso8601(date).to_time.to_i,
+        "ts": DateTime.iso8601(event['date']).to_time.to_i,
         "fields": [
           {
             "title": "Project",
-            "value": event.dig(:data, :projet, :name),
+            "value": event.dig('data', 'project', 'name'),
             "short": true
           },
           {
             "title": "Release",
-            "value": event.dig(:data, :name),
+            "value": event.dig('data', 'name'),
             "short": true
           },
           {
             "title": "Commit",
-            "value": event.dig(:data, :commitId),
+            "value": event.dig('data', 'commitId')[0..5],
             "short": true
           }
         ]
