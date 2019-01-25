@@ -77,56 +77,56 @@ require 'date'
 
 conn = CI::Connector.from_env
 conn.on('environment.lifecycle') do |event|
-  if event['event'] == 'release_started' || event['event'] == 'release_completed'
+  continue unless event['event'] == 'release_started' || event['event'] == 'release_completed'
 
-    uri = URI(ENV['SLACK_URL'])
+  uri = URI(ENV['SLACK_URL'])
 
-    header = {
-      'Content-Type': 'application/json',
-    }
+  header = {
+    'Content-Type': 'application/json',
+  }
 
-    payload = {
-      "attachments": [
-        {
-          "color": "#36a64f",
-          "ts": DateTime.iso8601(date).to_time.to_i,
-          "fields": [
-            {
-              "title": "Project",
-              "value": event.dig(:data, :projet, :name),
-              "short": true
-            },
-            {
-              "title": "Release",
-              "value": event.dig(:data, :name),
-              "short": true
-            },
-            {
-              "title": "Commit",
-              "value": event.dig(:data, :commitId),
-              "short": true
-            }
-          ]
-        }
-      ]
-    }
+  payload = {
+    "attachments": [
+      {
+        "color": "#36a64f",
+        "ts": DateTime.iso8601(date).to_time.to_i,
+        "fields": [
+          {
+            "title": "Project",
+            "value": event.dig(:data, :projet, :name),
+            "short": true
+          },
+          {
+            "title": "Release",
+            "value": event.dig(:data, :name),
+            "short": true
+          },
+          {
+            "title": "Commit",
+            "value": event.dig(:data, :commitId),
+            "short": true
+          }
+        ]
+      }
+    ]
+  }
 
-    if event['event'] == 'release_started'
-      payload['text'] = "Release started"
-    else
-      payload['text'] = "Release completed"
-    end
-
-    # Create the HTTP objects
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Post.new(uri.request_uri, header)
-    puts payload.to_json
-    request.body = payload.to_json
-
-    # Send the request
-    http.request(request)
+  if event['event'] == 'release_started'
+    payload['text'] = "Release started"
+  else
+    payload['text'] = "Release completed"
   end
+
+  # Create the HTTP objects
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  request = Net::HTTP::Post.new(uri.request_uri, header)
+  puts payload.to_json
+  request.body = payload.to_json
+
+  # Send the request
+  http.request(request)
+
 end
 
 conn.start
