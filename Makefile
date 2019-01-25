@@ -1,8 +1,9 @@
 .PHONY: _deploy
 _deploy:
-	helm upgrade --install --tiller-namespace coretech \
+	helm upgrade --install --tiller-namespace $(NAMESPACE) --namespace $(NAMESPACE) \
 		--set image=docker.k8s.jobteaser.net/coretech/ci-connector:master \
 		--set-file script=$(CURDIR)/bin/$(NAME)/main.rb \
+		-f $(CURDIR)/bin/$(NAME)/values.yaml \
 		$(NAME) \
 		jobteaser/ci-connector
 
@@ -14,7 +15,12 @@ datadog:
 .PHONY:
 # Deploy grafana connector
 grafana:
-	$(MAKE) _deploy NAME=$@
+	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
+
+.PHONY: release-notification
+# Deploy release-notification connector
+release-notification:
+	$(MAKE) _deploy NAME=$@ NAMESPACE=jobteaser
 
 .PHONY:
 # Deploy slack connector
