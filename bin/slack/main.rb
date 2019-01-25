@@ -86,27 +86,25 @@ conn.on('environment.lifecycle') do |event|
     }
 
     payload = {
-      text: "Release #{event['data']['project']['name']} #{event['data']['name']}",
       "attachments": [
         {
           "color": "#36a64f",
-          "title": "Release completed",
           "ts": DateTime.iso8601(date).to_time.to_i,
           "fields": [
             {
               "title": "Project",
-              "value": event['data']['project']['name'],
-              "short": flase
+              "value": event.dig(:data, :projet, :name),
+              "short": true
             },
             {
               "title": "Release",
-              "value": event['data']['name'],
-              "short": false
+              "value": event.dig(:data, :name),
+              "short": true
             },
             {
               "title": "Commit",
-              "value": event['data']['commitId'],
-              "short": false
+              "value": event.dig(:data, :commitId),
+              "short": true
             }
           ]
         }
