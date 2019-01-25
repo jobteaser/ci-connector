@@ -7,12 +7,12 @@ _deploy:
 		$(NAME) \
 		jobteaser/ci-connector
 
-.PHONY: datadog
+.PHONY:
 # Deploy datadog connector
 datadog:
-	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
+	$(MAKE) _deploy NAME=$@
 
-.PHONY: grafana
+.PHONY:
 # Deploy grafana connector
 grafana:
 	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
