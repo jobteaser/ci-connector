@@ -13,6 +13,11 @@ datadog:
 	$(MAKE) _deploy NAME=$@
 
 .PHONY:
+# Deploy newrelic connector
+newrelic:
+	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
+
+.PHONY:
 # Deploy grafana connector
 grafana:
 	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
