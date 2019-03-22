@@ -132,7 +132,7 @@ class SendReleaseEmail
   # Display message from fixes tag.
   class FixesLog
 
-    FIXES_LINE_REGEX = Regexp.new('^ *(?:Fixes|Closes) *:? *(?<line>.*)')
+    FIXES_LINE_REGEX = Regexp.new('^ *(?:fixes|closes) *:? *(?<line>.*)', true)
     FIXES_LINK_REGEX = Regexp.new('(?<link>https?://.*) *$')
 
     attr_reader :message, :link
