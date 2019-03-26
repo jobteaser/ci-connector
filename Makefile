@@ -10,7 +10,7 @@ _deploy:
 .PHONY:
 # Deploy datadog connector
 datadog:
-	$(MAKE) _deploy NAME=$@
+	$(MAKE) _deploy NAME=$@ NAMESPACE=coretech
 
 .PHONY:
 # Deploy grafana connector
