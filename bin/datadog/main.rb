@@ -83,7 +83,6 @@ conn.on('environment.lifecycle') do |event|
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(uri.request_uri)
-    # puts payload.to_json
     request.body = payload.to_json
 
     # Send the request
