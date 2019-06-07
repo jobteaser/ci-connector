@@ -75,7 +75,7 @@ class SendReleaseEmail
     sacha.alhimdani@jobteaser.com
     ),
     'jobteaser' => %w(
-    equipe@jobteaser.com
+    release-notifications@jobteaser.com
     )
   }.freeze
 

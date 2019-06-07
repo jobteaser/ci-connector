@@ -6,3 +6,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+# IntelliJ IDEA project folder
+/.idea/
