@@ -1,6 +1,6 @@
 # Ci::Connector
 
-| :warning: The scripts in the `bin` folder are not inculded in the docker image, but released via a ConfigMap. After changing them, you need to run `make release-notification` to deploy your local version of the scripts, so be careful that your local version is up to date.
+| :warning: The scripts in the `bin` folder are not included in the docker image, but released via a ConfigMap. After changing them, you need to run `make release-notification` to deploy your local version of the scripts, so be careful that your local version is up to date.
 | --- |
 
 ## Usage
